@@ -1,15 +1,58 @@
 [
     {
         "username": "Archilect",
-        "starting_elo": 1600,
+        "starting_elo": 1606,
         "current_elo": -1,
         "goal_elo": 1700,
         "mode": "blitz"
     },
     {
-        "username": "player2",
-        "starting_elo": 1200,
-        "goal_elo": 1400,
+        "username": "Adribery",
+        "starting_elo": 1347,
+        "current_elo": -1,
+        "goal_elo": 1550,
+        "mode": "blitz"
+    },
+    {
+        "username": "yazhino",
+        "starting_elo": 874,
+        "current_elo": -1,
+        "goal_elo": 1050,
         "mode": "rapid"
+    },
+    {
+        "username": "NASCARTII",
+        "starting_elo": 444,
+        "current_elo": -1,
+        "goal_elo": 1000,
+        "mode": "rapid"
+    },
+    {
+        "username": "Labelloo",
+        "starting_elo": 755,
+        "current_elo": -1,
+        "goal_elo": 1000,
+        "mode": "rapid"
+    },
+    {
+        "username": "chess_julien1292",
+        "starting_elo": 653,
+        "current_elo": -1,
+        "goal_elo": 1000,
+        "mode": "rapid"
+    },
+    {
+        "username": "saraxzzle",
+        "starting_elo": 358,
+        "current_elo": -1,
+        "goal_elo": 700,
+        "mode": "rapid"
+    },
+    {
+        "username": "TOMSKATS",
+        "starting_elo": 822,
+        "current_elo": -1,
+        "goal_elo": 1250,
+        "mode": "blitz"
     }
 ]
