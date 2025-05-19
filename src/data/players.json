@@ -1,0 +1,15 @@
+[
+    {
+        "username": "Archilect",
+        "starting_elo": 1600,
+        "current_elo": -1,
+        "goal_elo": 1700,
+        "mode": "blitz"
+    },
+    {
+        "username": "player2",
+        "starting_elo": 1200,
+        "goal_elo": 1400,
+        "mode": "rapid"
+    }
+]
