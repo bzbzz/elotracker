@@ -3,15 +3,19 @@
 import useSWR from "swr";
 import axios from "axios";
 import type { NextPage } from "next";
+import { StatCard } from "@/components/statCard";
 
-type Player = {
+export type Player = {
     username: string;
-    starting_elo: number;
-    goal_elo: number;
+    startingElo: number;
+    goalElo: number;
     mode: string;
-    current_elo: number;
+    currentElo: number;
     progress: number;
+    rest: number;
 };
+
+const medalColors = ["#EFBF04", "#B4B4B4", "#6A3805"]; // gold, silver, bronze
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -27,36 +31,77 @@ const Home: NextPage = () => {
             {players
                 .slice()
                 .sort((a, b) => b.progress - a.progress)
-                .map((p) => (
+                .map((p, i) => (
                     <div
                         key={p.username}
                         style={{
-                            border: "1px solid #ccc",
                             padding: "1rem",
                             margin: "1rem 0",
                             borderRadius: 8,
+
+                            background: medalColors[i] || "#0A0A0A",
+                            color: i < 3 ? "black" : "inherit",
+                            border: `1px solid ${medalColors[i] || "#CCCCCC"}`,
                         }}
                     >
-                        <strong>
+                        <strong style={{ fontSize: "1.1rem" }}>
                             {p.username} ({p.mode})
                         </strong>
-                        <div>Start: {p.starting_elo}</div>
-                        <div>Current: {p.current_elo}</div>
-                        <div>Goal: {p.goal_elo}</div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                justifyContent: "space-between",
+                                gap: "1rem",
+                            }}
+                            className="statcard-row"
+                        >
+                            <StatCard
+                                title="DEPART"
+                                value={p.startingElo}
+                                variant={i < 3 ? "black" : "blue"}
+                            />
+                            <StatCard
+                                title="ACTUEL"
+                                value={p.currentElo}
+                                variant={i < 3 ? "black" : "blue"}
+                            />
+                            <StatCard
+                                title="OBJECTIF"
+                                value={p.goalElo}
+                                variant={i < 3 ? "black" : "blue"}
+                            />
+                            <StatCard
+                                title="RESTE"
+                                value={p.rest}
+                                variant={i < 3 ? "black" : "blue"}
+                            />
+                        </div>
                         <div>Progress: {Math.round(p.progress * 100)}%</div>
                         <div
                             style={{
-                                background: "#eee",
-                                borderRadius: 4,
+                                background: "#637381",
+                                borderRadius: 14,
                                 overflow: "hidden",
                                 marginTop: 8,
+                                position: "relative",
+                                height: 14,
                             }}
                         >
                             <div
                                 style={{
-                                    width: `${p.progress * 100}%`,
-                                    background: "#4caf50",
-                                    height: 8,
+                                    position: "absolute",
+                                    left: "50%",
+                                    top: 0,
+                                    bottom: 0,
+                                    width: `${Math.abs(p.progress) * 50}%`,
+                                    transform:
+                                        p.progress < 0
+                                            ? "translateX(-100%)"
+                                            : "none",
+                                    background:
+                                        p.progress < 0 ? "#E32F30" : "#03AD23",
+                                    transition: "width 0.3s, background 0.3s",
                                 }}
                             />
                         </div>

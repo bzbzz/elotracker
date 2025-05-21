@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+// This function fetches the chess rating of a player from the Chess.com API
 export async function getPlayerData(username: string, mode: string): Promise<number> {
   try {
     const { data } = await axios.get(

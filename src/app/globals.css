@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.statcard-row > div {
+    flex: 1 1 40%;
+    min-width: 140px;
+    max-width: 220px;
+}
+
+@media (min-width: 600px) {
+    .statcard-row > div {
+        flex: 1 1 20%;
+        min-width: 140px;
+        max-width: 220px;
+    }
+}

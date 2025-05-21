@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Player {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  startingElo  Int
+  goalElo      Int
+  mode         String
+  snapshots    EloSnapshot[]
+}
+
+model EloSnapshot {
+  id        Int      @id @default(autoincrement())
+  player    Player   @relation(fields: [playerId], references: [id])
+  playerId  Int
+  elo       Int
+  progress  Float
+  recorded  DateTime @default(now())
+}

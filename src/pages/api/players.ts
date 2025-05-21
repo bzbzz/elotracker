@@ -1,29 +1,28 @@
+// pages/api/players.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import players from "@/data/players.json";
-import { getPlayerData } from "@/utils/chessApi";
-
-type Player = {
-    username: string;
-    starting_elo: number;
-    goal_elo: number;
-    mode: string;
-    current_elo?: number;
-    progress?: number;
-};
+import { db } from "../../utils/database";
+import { getPlayerData } from "../../utils/chessApi";
 
 export default async function handler(
     _req: NextApiRequest,
-    res: NextApiResponse<Player[]>
+    res: NextApiResponse
 ) {
+    const players = await db.player.findMany();
     const results = await Promise.all(
         players.map(async (p) => {
-            const current_elo = await getPlayerData(p.username, p.mode);
+            const currentElo = await getPlayerData(p.username, p.mode);
             const progress =
-                (current_elo - p.starting_elo) / (p.goal_elo - p.starting_elo);
+                (currentElo - p.startingElo) / (p.goalElo - p.startingElo);
+            const rest = p.goalElo - currentElo;
+
             return {
-                ...p,
-                current_elo,
-                progress: Math.min(Math.max(progress, 0), 1),
+                username: p.username,
+                startingElo: p.startingElo,
+                goalElo: p.goalElo,
+                mode: p.mode,
+                currentElo,
+                progress: Math.min(progress, 1),
+                rest,
             };
         })
     );
