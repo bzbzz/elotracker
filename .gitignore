@@ -4,6 +4,9 @@ node_modules/
 # Next.js build output
 .next/
 
+# General util scripts (Some js and stuff can block)
+scripts/
+
 # Build output
 dist/
 build/
