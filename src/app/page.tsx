@@ -58,22 +58,22 @@ const Home: NextPage = () => {
                             <StatCard
                                 title="DEPART"
                                 value={p.startingElo}
-                                variant={i === 0 ? "black" : "blue"}
+                                variant="blue"
                             />
                             <StatCard
                                 title="ACTUEL"
                                 value={p.currentElo}
-                                variant={i === 0 ? "black" : "blue"}
+                                variant="blue"
                             />
                             <StatCard
                                 title="OBJECTIF"
                                 value={p.goalElo}
-                                variant={i === 0 ? "black" : "blue"}
+                                variant="blue"
                             />
                             <StatCard
                                 title="RESTE"
                                 value={p.rest}
-                                variant={i === 0 ? "black" : "blue"}
+                                variant="blue"
                             />
                         </div>
                         <div>Progress: {Math.round(p.progress * 100)}%</div>
