@@ -15,7 +15,7 @@ export type Player = {
     rest: number;
 };
 
-const medalColors = ["#EFBF04", "#B4B4B4", "#6A3805"]; // gold, silver, bronze
+const medalColors = ["#EFBF04"]; // gold, silver, bronze
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -38,9 +38,8 @@ const Home: NextPage = () => {
                             padding: "1rem",
                             margin: "1rem 0",
                             borderRadius: 8,
-
-                            background: medalColors[i] || "#0A0A0A",
-                            color: i < 3 ? "black" : "inherit",
+                            background: medalColors[i] || "#ffffff",
+                            color: "black",
                             border: `1px solid ${medalColors[i] || "#CCCCCC"}`,
                         }}
                     >
@@ -59,22 +58,22 @@ const Home: NextPage = () => {
                             <StatCard
                                 title="DEPART"
                                 value={p.startingElo}
-                                variant={i < 3 ? "black" : "blue"}
+                                variant={i === 0 ? "black" : "blue"}
                             />
                             <StatCard
                                 title="ACTUEL"
                                 value={p.currentElo}
-                                variant={i < 3 ? "black" : "blue"}
+                                variant={i === 0 ? "black" : "blue"}
                             />
                             <StatCard
                                 title="OBJECTIF"
                                 value={p.goalElo}
-                                variant={i < 3 ? "black" : "blue"}
+                                variant={i === 0 ? "black" : "blue"}
                             />
                             <StatCard
                                 title="RESTE"
                                 value={p.rest}
-                                variant={i < 3 ? "black" : "blue"}
+                                variant={i === 0 ? "black" : "blue"}
                             />
                         </div>
                         <div>Progress: {Math.round(p.progress * 100)}%</div>
