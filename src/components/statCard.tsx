@@ -14,7 +14,7 @@ export const StatCard = ({ title, value, variant }: StatCardProps) => (
             margin: "0.5rem 0",
             background:
                 variant === "blue"
-                    ? "linear-gradient(56deg,rgba(95, 104, 255, 1) 0%, rgba(3, 16, 255, 1) 100%)"
+                    ? "linear-gradient(56deg, rgba(3, 16, 255, 1) 0%, rgba(95, 104, 255, 1) 100%)"
                     : "#000000",
             minWidth: 100,
             display: "inline-block",
