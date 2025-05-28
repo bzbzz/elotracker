@@ -19,7 +19,7 @@ export default async function handler(
             data: {
                 playerId: p.id,
                 elo,
-                progress: Math.min(Math.max(progress, 0), 1),
+                progress: Math.min(progress, 1),
             },
         });
         count++;
