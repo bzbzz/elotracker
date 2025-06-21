@@ -4,46 +4,55 @@ import { BouncingChessPieces } from "@/components/bouncingPieces";
 import axios from 'axios';
 import useSWR from 'swr';
 
+interface PlayerSnapshot {
+    recorded: string;
+    elo: number;
+    progress: number;
+}
+
+interface PlayerData {
+    username: string;
+    data: PlayerSnapshot[];
+}
+
+interface ChartDataPoint {
+    recorded: string;
+    [playerName: string]: string | number;
+}
+
+// List of player names we want to display
+const playerNames = ["Archilect", "Adribery", "yazhino", "NASCARTII", "Labelloo", "chess_julien1292", "saraxzzle", "THOMVIET"];
+
+// Colors for each player line
+const lineColors = ["#FF0000", "#0000FF", "#00FF00", "#FFF000", "#FF00FF", "#00FFFF", "#FF8000", "#8B4513"];
+
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export const ProgressChart = () => {
-    // List of player names we want to display
-    const playerNames = ["Archilect", "Adribery", "yazhino", "NASCARTII", "Labelloo", "chess_julien1292", "saraxzzle", "THOMVIET"];
 
-    // Colors for each player line
-    const lineColors = ["#FFFFFF", "#0000FF", "#00FF00", "#FF0000", "#FF00FF", "#00FFFF", "#FF8000", "#8B4513"];
-
-    const { data: players, error } = useSWR("/api/history", fetcher);
+    const { data: players, error } = useSWR<PlayerData[]>("/api/history", fetcher);
 
     // State for selected month
     const [selectedMonth, setSelectedMonth] = useState<string>('');
 
-    // Get available months and prepare data
-    const { availableMonths, monthlyData } = useMemo(() => {
-        if (!players) return { availableMonths: [], monthlyData: {} };
+    // Get available months
+    const availableMonths = useMemo(() => {
+        if (!players) return [];
 
         const monthsSet = new Set<string>();
-        const monthlyDataMap: { [key: string]: any[] } = {};
 
-        // Collect all available months and group data by month
-        players.forEach((player: { username: string; data: any[] }) => {
+        // Collect all available months
+        players.forEach((player: PlayerData) => {
             if (playerNames.includes(player.username)) {
-                player.data.forEach((snapshot: { recorded: string; progress: number }) => {
+                player.data.forEach((snapshot: PlayerSnapshot) => {
                     const date = new Date(snapshot.recorded);
                     const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                    const monthLabel = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
-
                     monthsSet.add(monthKey);
-
-                    if (!monthlyDataMap[monthKey]) {
-                        monthlyDataMap[monthKey] = [];
-                    }
                 });
             }
         });
 
-        const sortedMonths = Array.from(monthsSet).sort().reverse(); // Most recent first
-        return { availableMonths: sortedMonths, monthlyData: monthlyDataMap };
+        return Array.from(monthsSet).sort().reverse(); // Most recent first
     }, [players]);
 
     // Set default selected month to the most recent one
@@ -57,10 +66,10 @@ export const ProgressChart = () => {
     const chartData = useMemo(() => {
         if (!players || !selectedMonth) return [];
 
-        const selectedMonthData: { [key: string]: any } = {};
+        const selectedMonthData: { [key: string]: ChartDataPoint } = {};
 
         // Filter data for selected month and organize by date
-        players.forEach((player: { username: string; data: any[] }) => {
+        players.forEach((player: PlayerData) => {
             if (playerNames.includes(player.username)) {
                 player.data
                     .filter((snapshot: { recorded: string }) => {
@@ -81,7 +90,7 @@ export const ProgressChart = () => {
         });
 
         // Convert to array and sort by date
-        return Object.values(selectedMonthData).sort((a: any, b: any) =>
+        return Object.values(selectedMonthData).sort((a: ChartDataPoint, b: ChartDataPoint) =>
             new Date(a.recorded).getTime() - new Date(b.recorded).getTime()
         );
     }, [players, selectedMonth]);
@@ -98,7 +107,7 @@ export const ProgressChart = () => {
     return (
         <div>
             {/* Month Selection */}
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '20px', color: "#FFFFFF" }}>
                 <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}
@@ -107,8 +116,7 @@ export const ProgressChart = () => {
                         border: '1px solid #ccc',
                         borderRadius: '4px',
                         fontSize: '14px',
-                        minWidth: '200px',
-                        color: "#FFFFFF",
+                        minWidth: '200px'
                     }}
                 >
                     {availableMonths.map((month) => (
